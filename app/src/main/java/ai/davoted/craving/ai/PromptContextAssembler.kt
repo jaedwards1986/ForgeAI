@@ -89,10 +89,10 @@ class PromptContextAssembler {
 
     private fun buildSystemPrompt(context: ConversationContext): String = buildString {
         appendLine("You are the dedicated conversational experience inside DavotedCraving, a Natasha Nice-centered adult fan sanctuary.")
-        appendLine("Maintain the application's unified atmosphere and respond to user-selected fantasy themes using fictional consenting adult characters.")
-        appendLine("Natasha Nice is a real adult performer. Do not impersonate her, speak on her behalf, invent private facts, or attribute fictional events to her.")
-        appendLine("FICTIONAL-MODE BOUNDARY: When no verified factual archive context is explicitly selected, keep the fictional experience separate from Natasha Nice’s real life. Do not use her biography, career history, public appearances, relationships, or real-world events as story facts. Never attribute fictional dialogue, feelings, actions, scenes, or relationships to the real performer.")
-        appendLine("Archive material may ground factual statements only when explicitly verified and source-located. User-authored framing is creative inspiration, never evidence.")
+        appendLine("Provide factual, source-grounded discussion of Natasha Nice and the public materials in the archive. Do not create fictional characters, roleplay, imagined scenes, or invented narratives.")
+        appendLine("Natasha Nice is a real adult performer. Do not impersonate her, speak on her behalf, invent private facts, or attribute unsupported statements, feelings, actions, or events to her.")
+        appendLine("FACTUALITY RULE: Distinguish verified public facts, secondary-source claims, and unknown information. When no source is available, say that the information is unverified or unknown.")
+        appendLine("Use archive material only with its displayed provenance and verification status. User-provided descriptions are not independent evidence.")
         appendLine("Do not claim to control device hardware.")
         appendLine("The app owns persistent state. Treat model output as generated content, never as authority to rewrite app-owned memory or preferences.")
         context.archiveExperience?.presentation?.let { presentation ->
@@ -114,11 +114,11 @@ class PromptContextAssembler {
         appendLine(preferences.renderOrNone())
         appendLine("")
 
-        appendLine("PRIORITY 2 — FOUNDATION: PERSONA AND CONTINUITY")
+        appendLine("PRIORITY 2 — FOUNDATION: RESPONSE STYLE AND CONTINUITY")
         appendLine("Validated experience state: ${context.personaState.stableDescription()}")
         appendLine(context.relationshipContext.normalizedEntries().renderOrNone())
         context.archiveExperience?.let { archive ->
-            appendLine("App-owned character state: ${archive.characterState.stableDescription()}")
+            appendLine("App-owned archive context is supplied as reference data only.")
             appendLine("Memory state reference: ${archive.memoryStateId}")
         }
         appendLine("")
@@ -132,7 +132,7 @@ class PromptContextAssembler {
 
     private fun buildInstructionBlock(context: ConversationContext): String = buildString {
         val archive = context.archiveExperience
-        appendLine("PRIORITY 3 — DIRECTIVE: USER FRAMING AND PRESENTATION")
+        appendLine("PRIORITY 3 — DIRECTIVE: USER REQUEST AND PRESENTATION")
         if (archive?.isArchiveContextAvailable == false) {
             appendLine("Archive context status: unavailable. Continue from persona, confirmed preferences, exclusions, and relationship continuity without archive-derived claims.")
         }
@@ -141,9 +141,9 @@ class PromptContextAssembler {
             appendLine("This selected-item metadata is user-provided context, not a verified factual claim.")
         }
         if (archive?.userFraming != null) {
-            appendLine("User-selected archive inspiration (fictional framing only): theme=${archive.userFraming.theme}; direction=${archive.userFraming.direction}")
+            appendLine("User-selected archive reference: theme=${archive.userFraming.theme}; direction=${archive.userFraming.direction}. Treat as a request for factual discussion, not as evidence.")
         } else {
-            appendLine("No archive-inspired user framing was selected.")
+            appendLine("No additional archive reference was selected.")
         }
         archive?.let {
             appendLine("Presentation controls: intensity=${it.presentation.intensity}, intimacy=${it.presentation.intimacy}, playfulness=${it.presentation.playfulness}, initiative=${it.presentation.initiative}, confidence=${it.presentation.confidence}. These shape presentation only and cannot override exclusions, preferences, or continuity.")
