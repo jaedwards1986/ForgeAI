@@ -85,7 +85,7 @@ private fun SanctuaryScreen(
             Spacer(Modifier.height(8.dp))
             Text("The Sanctuary", style = MaterialTheme.typography.headlineLarge, fontWeight = FontWeight.SemiBold)
             Text(
-                "A private Natasha Nice-centered fan archive and fictional interactive experience.",
+                "A private Natasha Nice-centered archive and factual on-device AI experience.",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -99,7 +99,7 @@ private fun SanctuaryScreen(
                     Text("THE EXPERIENCE", style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
                     Text("Your private, on-device conversation", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.SemiBold)
                     Text(
-                        "Choose a local GGUF model, switch between factual archive discussion and a clearly fictional adult character experience, and continue without remote inference.",
+                        "Choose a local GGUF model to discuss source-linked public material and your private archive. All inference stays on this device.",
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
