@@ -1,6 +1,7 @@
 package ai.davoted.craving.ui
 
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.graphics.BitmapFactory
 import android.widget.MediaController
@@ -144,6 +145,36 @@ fun ArchiveScreen(modifier: Modifier = Modifier) {
             modifier = Modifier.weight(1f).fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
+            item {
+                Text("PUBLIC CAREER REFERENCES", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
+                Text(
+                    "Source-linked public catalog facts. These are secondary references, not primary-source verification.",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
+            items(NatashaPublicArchiveFacts, key = { it.id }) { fact ->
+                Card(colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)) {
+                    Column(Modifier.fillMaxWidth().padding(14.dp), verticalArrangement = Arrangement.spacedBy(7.dp)) {
+                        Text(fact.heading, style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
+                        Text(fact.detail, style = MaterialTheme.typography.bodyMedium)
+                        Text(fact.provenanceNote, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        OutlinedButton(
+                            onClick = {
+                                runCatching {
+                                    context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(fact.sourceUrl)))
+                                }.onFailure {
+                                    status = "Could not open source: ${it.message ?: "unknown error"}"
+                                }
+                            },
+                            modifier = Modifier.fillMaxWidth()
+                        ) { Text("Open ${fact.sourceLabel}") }
+                    }
+                }
+            }
+            item {
+                Text("YOUR PRIVATE COLLECTION", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.SemiBold)
+            }
             if (entries.isEmpty()) {
                 item {
                     Text("Your archive is empty. Add an authentic item from a source you trust; the app records its provenance locally.", color = MaterialTheme.colorScheme.onSurfaceVariant)
