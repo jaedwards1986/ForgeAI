@@ -25,7 +25,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import java.io.File
 import java.io.FileInputStream
 
-enum class ConversationMode { FACTUAL, FICTIONAL }
+enum class ConversationMode { FACTUAL }
 
 data class ConversationUiState(
     val messages: List<ConversationMessage> = emptyList(),
@@ -35,7 +35,7 @@ data class ConversationUiState(
     val isBusy: Boolean = true,
     val lastPresentation: String = "No generated response yet",
     val selectedModelPath: String? = null,
-    val mode: ConversationMode = ConversationMode.FICTIONAL,
+    val mode: ConversationMode = ConversationMode.FACTUAL,
     val selectedArchiveItemId: String? = null
 ) {
     val canGenerate: Boolean get() = !isBusy && modelStatus == LocalModelStatus.READY
@@ -80,7 +80,7 @@ class ConversationService(
             _state.value = _state.value.copy(
                 messages = messages,
                 selectedModelPath = path,
-                mode = runCatching { ConversationMode.valueOf(snapshot.conversationMode) }.getOrDefault(ConversationMode.FICTIONAL),
+                mode = ConversationMode.FACTUAL,
                 modelName = path?.let { File(it).name } ?: "No model loaded",
                 statusMessage = if (path == null) "Choose a GGUF model" else "Restoring local model…"
             )
@@ -177,8 +177,7 @@ class ConversationService(
         try {
             persist(_state.value.selectedModelPath)
             val snapshot = store.load()
-            val mode = _state.value.mode
-            val archiveExperience = if (mode == ConversationMode.FACTUAL) {
+            val archiveExperience = run {
                 val transformed = personaOrchestrator.transformArchiveContext(
                     context = selectedArchiveContext,
                     memory = ArchiveMemoryState(
@@ -196,7 +195,7 @@ class ConversationService(
                     )
                     is ArchiveTransformResult.NoArchiveContext -> null
                 }
-            } else null
+            }
 
             val result = adapter.generate(
                 messages = updatedMessages,
