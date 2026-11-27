@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <atomic>
 #include <cstdint>
+#include <fstream>
 #include <limits>
 #include <mutex>
 #include <string>
@@ -112,6 +113,19 @@ Java_ai_davoted_craving_ai_JniLlamaCppRuntime_nativeLoadModel(
     }
     const std::string model_path(path);
     env->ReleaseStringUTFChars(j_path, path);
+
+    std::ifstream model_file(model_path, std::ios::binary);
+    char magic[4] = {};
+    if (!model_file.read(magic, sizeof(magic)) ||
+        magic[0] != 'G' || magic[1] != 'G' || magic[2] != 'U' || magic[3] != 'F') {
+        throw_java(env, "Selected file is not a readable GGUF model.");
+        return JNI_FALSE;
+    }
+    model_file.seekg(0, std::ios::end);
+    if (model_file.tellg() <= 4) {
+        throw_java(env, "GGUF model file is empty or truncated.");
+        return JNI_FALSE;
+    }
 
     std::lock_guard<std::mutex> lock(g_mutex);
     release_model_locked();
