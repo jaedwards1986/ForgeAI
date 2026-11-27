@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -51,7 +52,7 @@ fun DavotedCravingApp() {
         ) {
             // Keep the local runtime composed while navigating so its adapter and conversation survive tab changes.
             LocalInferenceScreen(
-                modifier = if (selected == 1) Modifier.fillMaxSize() else Modifier.padding(0.dp)
+                modifier = if (selected == 1) Modifier.fillMaxSize() else Modifier.size(0.dp)
             )
             if (selected == 2) ArchiveScreen(modifier = Modifier.fillMaxSize())
             if (selected == 3) MemoryScreen(modifier = Modifier.fillMaxSize())
