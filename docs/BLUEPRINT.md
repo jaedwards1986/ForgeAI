@@ -14,7 +14,7 @@ The app has four primary areas:
 
 1. **Character list** — browse a small set of bundled fictional adult characters in a vertical list. Each row shows a portrait thumbnail, character name, and short description. Selecting a row opens that character's profile.
 2. **Character profile** — show the selected character's large portrait, name, personality/description, and a prominent action to start a new chat or resume the existing conversation.
-3. **Chat** — use a clean, modern messaging interface with a compact character header, a scrollable message history, visually distinct message bubbles for the character and the user, and a message composer anchored at the bottom. Keep controls minimal so the conversation remains the focus.
+3. **Chat** — use a clean, modern messaging interface with a compact header containing a small portrait thumbnail beside the character's name, a scrollable message history, visually distinct message bubbles for the character and the user, and a message composer anchored at the bottom. Keep controls minimal so the conversation remains the focus.
 4. **Settings / Model manager** — see the active model, import or download a compatible GGUF model, select an installed model, and view basic model status.
 
 Conversation history is saved locally and remains associated with its character. Switching models must not delete or rewrite character profiles or saved chat history.
@@ -60,6 +60,14 @@ The v1 chat screen uses a conventional, uncluttered messaging layout:
 The conversation is the primary focus. The interface should feel familiar and make ordinary back-and-forth messaging straightforward.
 
 This is a documented design decision. It is not represented as implemented until the screen exists in the app and is verified.
+
+### Chat header portrait decision — Question 4
+
+**Approved choice: B — Small portrait.**
+
+The chat header displays a small portrait thumbnail beside the selected character's name. The portrait remains visible while chatting but does not occupy a large area or compete with the conversation for screen space. The header remains compact and the message history stays central.
+
+This is a documented design decision. It is not represented as implemented until the chat screen exists in the app and is verified.
 
 ## 3. Character system
 
