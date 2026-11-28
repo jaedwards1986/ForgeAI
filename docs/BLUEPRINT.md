@@ -69,6 +69,21 @@ The chat header displays a small portrait thumbnail beside the selected characte
 
 This is a documented design decision. It is not represented as implemented until the chat screen exists in the app and is verified.
 
+### Conversation persistence decision — Question 5
+
+**Approved choice: A — Automatic saving.**
+
+NEXORA automatically persists each user message and each generated character response as the conversation progresses. Saving must not depend on the user pressing a save button or leaving the chat.
+
+Requirements:
+- Persist each message promptly after it is accepted or generated, with clear handling for write failures.
+- Restore the conversation when the user returns to that chat.
+- Keep conversation records associated with stable character IDs.
+- Preserve conversation history across app restarts and compatible model switches.
+- Do not make model changes erase, rewrite, or silently discard saved conversations.
+
+This is a documented design decision. It is not represented as implemented until automatic persistence and restoration are built and verified.
+
 ## 3. Character system
 
 - Character profiles are app-owned structured data, separate from model files.
