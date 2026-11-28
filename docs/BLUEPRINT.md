@@ -14,7 +14,7 @@ The app has four primary areas:
 
 1. **Character list** — browse a small set of bundled fictional adult characters in a vertical list. Each row shows a portrait thumbnail, character name, and short description. Selecting a row opens that character's profile.
 2. **Character profile** — show the selected character's large portrait, name, personality/description, and a prominent action to start a new chat or resume the existing conversation.
-3. **Chat** — send messages and receive locally generated model responses. The app automatically supplies the selected character definition and conversation context.
+3. **Chat** — use a clean, modern messaging interface with a compact character header, a scrollable message history, visually distinct message bubbles for the character and the user, and a message composer anchored at the bottom. Keep controls minimal so the conversation remains the focus.
 4. **Settings / Model manager** — see the active model, import or download a compatible GGUF model, select an installed model, and view basic model status.
 
 Conversation history is saved locally and remains associated with its character. Switching models must not delete or rewrite character profiles or saved chat history.
@@ -43,6 +43,21 @@ After the user selects a character from the list, NEXORA opens a dedicated profi
 - A **Resume Chat** action when a saved conversation exists.
 
 This screen provides context about the selected character before entering the conversation. The profile is a presentation of the app-owned character definition; it does not require the user to configure prompts or model settings.
+
+This is a documented design decision. It is not represented as implemented until the screen exists in the app and is verified.
+
+### Chat interface decision — Question 3
+
+**Approved choice: A — Clean modern chat.**
+
+The v1 chat screen uses a conventional, uncluttered messaging layout:
+- A compact header showing the selected character's name and portrait.
+- A scrollable conversation history.
+- Distinct message bubbles for character responses and user messages.
+- A message input field and send action anchored at the bottom.
+- Minimal additional controls; no meters, game mechanics, or decorative panels competing with the conversation.
+
+The conversation is the primary focus. The interface should feel familiar and make ordinary back-and-forth messaging straightforward.
 
 This is a documented design decision. It is not represented as implemented until the screen exists in the app and is verified.
 
@@ -124,7 +139,7 @@ A milestone is complete only after its stated tests pass. A successful Gradle bu
 - GGUF compatibility varies; model metadata, tokenizer, chat template, and llama.cpp support must be checked.
 - An 8B quantized model may run on the target phone, but speed, memory pressure, thermal behavior, and context capacity must be measured on-device.
 - Downloading arbitrary models is not equivalent to supporting all models. The app will maintain a tested compatibility list.
-- Character consistency depends partly on the selected model. The app can preserve profile and chat data, but cannot guarantee identical output across models.
+- Character consistency depends partly on the selected model. The app can preserve profile and chat data, but cannot guarantee identical output across different models.
 - Model licensing and distribution terms must be checked before bundling any model.
 
 ## 9. Development controls
