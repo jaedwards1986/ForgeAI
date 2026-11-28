@@ -103,7 +103,9 @@ class MainActivity : ComponentActivity() {
         window.navigationBarColor = android.graphics.Color.rgb(11, 18, 27)
         setContent {
             MaterialTheme(colorScheme = NexoraColors) {
-                NexoraScreen()
+                PinGate {
+                    NexoraScreen()
+                }
             }
         }
     }
