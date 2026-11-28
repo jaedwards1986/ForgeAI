@@ -85,15 +85,15 @@ private enum class Destination(val label: String) {
 
 
 private val NexoraColors = darkColorScheme(
-    primary = androidx.compose.ui.graphics.Color(0xFF65D6CB),
-    onPrimary = androidx.compose.ui.graphics.Color(0xFF062B2A),
-    secondary = androidx.compose.ui.graphics.Color(0xFF91BFC0),
-    background = androidx.compose.ui.graphics.Color(0xFF0B121B),
-    surface = androidx.compose.ui.graphics.Color(0xFF121D29),
-    surfaceVariant = androidx.compose.ui.graphics.Color(0xFF1B2A38),
-    onSurface = androidx.compose.ui.graphics.Color(0xFFE8F0F5),
-    onSurfaceVariant = androidx.compose.ui.graphics.Color(0xFFA7B8C5),
-    outline = androidx.compose.ui.graphics.Color(0xFF344858)
+    primary = androidx.compose.ui.graphics.Color(0xFFFF3B30),
+    onPrimary = androidx.compose.ui.graphics.Color(0xFFFFFFFF),
+    secondary = androidx.compose.ui.graphics.Color(0xFFFF6A3D),
+    background = androidx.compose.ui.graphics.Color(0xFF080708),
+    surface = androidx.compose.ui.graphics.Color(0xFF171014),
+    surfaceVariant = androidx.compose.ui.graphics.Color(0xFF2A141A),
+    onSurface = androidx.compose.ui.graphics.Color(0xFFF7ECEC),
+    onSurfaceVariant = androidx.compose.ui.graphics.Color(0xFFBCA8AC),
+    outline = androidx.compose.ui.graphics.Color(0xFF5A2932)
 )
 
 class MainActivity : ComponentActivity() {
@@ -103,7 +103,9 @@ class MainActivity : ComponentActivity() {
         window.navigationBarColor = android.graphics.Color.rgb(11, 18, 27)
         setContent {
             MaterialTheme(colorScheme = NexoraColors) {
-                NexoraScreen()
+                PinGate {
+                    NexoraScreen()
+                }
             }
         }
     }
