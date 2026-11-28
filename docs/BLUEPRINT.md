@@ -1,111 +1,110 @@
-# NEXORA — Product Blueprint (Draft 1)
+# NEXORA — Version 1 Build Contract
 
-## 1. Product purpose
+**Status:** Scope baseline. This document defines the first deliverable. Changes require the user's approval.
 
-Build a private Android entertainment app for adults. It should provide varied, interactive experiences without depending on AI chat, hosted services, or a permanent internet connection.
+## 1. Product
 
-The app is a tool for exploring fictional adult-themed stories and organizing media the owner chooses to add. All characters and scenarios are fictional adults.
+NEXORA is an offline-first Android character-chat app. The user selects a fictional adult character and chats with that character in a conventional messaging interface. The user does not write prompts or configure model instructions.
 
-## 2. First-release experience
+The first release is deliberately a focused chat app, not a game platform or media library.
 
-The home screen has four clear destinations:
+## 2. Version 1 user experience
 
-1. **Stories** — choose a story, make decisions, and follow branching paths with multiple endings.
-2. **Scenario Studio** — combine available characters, settings, moods, and story premises to create a fresh scenario from locally stored templates.
-3. **My Library** — browse personal images and videos imported by the user, with favorites and collections.
-4. **Saved** — return to bookmarked stories, scenarios, and media.
+The app has four primary areas:
 
-A Settings area provides privacy, appearance, storage, and content controls.
+1. **Character list** — browse a small set of bundled fictional adult characters, each with a portrait, name, and short profile.
+2. **Character profile** — view the character description and start or resume a conversation.
+3. **Chat** — send messages and receive locally generated model responses. The app automatically supplies the selected character definition and conversation context.
+4. **Settings / Model manager** — see the active model, import or download a compatible GGUF model, select an installed model, and view basic model status.
 
-## 3. Design direction
+Conversation history is saved locally and remains associated with its character. Switching models must not delete or rewrite character profiles or saved chat history.
 
-- Visual style: dark, polished, private, and cinematic; restrained accent color rather than a cluttered neon look.
-- Layout: simple bottom navigation with large, clear entry points.
-- Home: a featured story, a quick-start scenario tile, and recently opened items.
-- Story reader: readable text, optional artwork, clear choices, and an always-visible save/continue action.
-- Scenario Studio: straightforward selectors and a preview before starting.
-- Library: grid/list toggle, folders or collections, favorites, and playback/viewing controls.
-- Accessibility: scalable text, strong contrast, clear touch targets, and reduced-motion option.
+## 3. Character system
 
-The interface must remain usable on a phone screen and must not require accounts or network access.
+- Character profiles are app-owned structured data, separate from model files.
+- Each profile contains a stable ID, display name, portrait asset, description, personality traits, and conversation style.
+- The app supplies character instructions automatically; the user never needs to write hidden prompts.
+- Characters are fictional adults.
+- Portraits are static assets bundled with the app in v1. In-app image generation and user-created portrait tooling are excluded from v1.
+- The initial release starts with a small approved set of characters. The user can help define and approve their appearance and profiles before those assets are finalized.
 
-## 4. Functional requirements
+## 4. Local model and chat
 
-### Interactive stories
-- Stories are stored locally as structured content.
-- Choices lead to defined branches and endings.
-- Save progress and resume later.
-- Browse by theme and completion status.
-- The app ships with sample, non-explicit placeholder story content until the user approves the content plan and supplies or approves media.
+- Android app written in Kotlin.
+- Local inference through llama.cpp using compatible GGUF models.
+- No remote inference, paid API, account, subscription, advertising, or server required for chatting.
+- The app includes one verified starter model only if distribution size and licensing permit; otherwise the user imports/downloads the model through the app's model manager.
+- Model downloads require an internet connection. Once a model is installed, chat must work in airplane mode.
+- Model compatibility is validated before activation. The app must not claim every GGUF model is supported.
+- Only one model runs at a time in v1.
+- Model switching preserves characters and conversation records. A conversation may sound different under a different model; identical personality or response quality across models is not guaranteed.
+- Chat requests include the selected character profile and a bounded amount of conversation history. Context limits and generation settings are handled by the app.
+- Generation can be cancelled, and the UI must show loading/error states rather than appearing frozen.
 
-### Scenario Studio
-- Build scenarios from locally bundled templates and user-editable choices.
-- Randomize compatible combinations for variety.
-- Allow reroll, edit, favorite, and save.
-- Do not claim AI-generated prose: the first version uses authored templates and modular text.
+## 5. Local persistence
 
-### Personal media library
-- Import images and videos selected by the user.
-- Organize into collections and favorites.
-- Support slideshow and video playback using Android-supported formats.
-- Keep imported media on-device; do not upload or transmit it.
-- Provide delete and storage-management controls.
+- Store character definitions, conversation records, active model selection, and app settings locally.
+- Use stable character IDs so conversations remain attached to the same character if portraits or model files change.
+- Do not store persona definitions inside a model file.
+- Do not erase conversations when a model is removed or changed.
+- Provide clear handling for insufficient storage and failed model imports.
 
-### Privacy and offline operation
-- No account, advertising SDK, subscription, analytics service, or remote inference.
-- No server dependency for core features.
-- Optional app PIN gate.
-- Store app data locally and use Android's supported private app storage.
-- Explain clearly that uninstalling the app may remove locally stored data unless the user exports or backs it up.
+## 6. Explicit v1 exclusions
 
-## 5. Technical approach
+Not included in the first release:
+- Voice input/output or live voice calls.
+- Image or video generation.
+- Media gallery or phone-photo import.
+- Online character marketplace or community sharing.
+- Cloud accounts, sync, remote databases, or remote inference.
+- Complex relationship meters, unlock systems, branching games, or scenario generators.
+- Guaranteed compatibility with every GGUF file.
+- Guaranteed identical character behavior across different models.
 
-- Android application, with a web-based HTML/CSS/JavaScript interface packaged inside an Android WebView if that remains the simplest maintainable approach.
-- Kotlin handles Android integration, local file access, app lock, and media playback.
-- Local structured data stores story definitions, progress, scenario templates, favorites, and settings.
-- Use Android's system file picker for media import and avoid broad storage permissions.
-- No backend service is part of the design.
+These are excluded to keep the first build testable and achievable. Any addition requires explicit scope approval.
 
-## 6. First build milestone
+## 7. Build milestones and acceptance tests
 
-The first milestone is a real installable debug APK with:
-- Home and navigation.
-- A working story reader with branching choices.
-- Scenario Studio using local templates and randomization.
-- A local media library that can import and display user-selected files.
-- Favorites and saved progress.
-- Settings and an optional PIN gate.
-- Verified airplane-mode operation for all core features.
+### Milestone A — Android shell
+- Project builds as a debug APK.
+- App launches on the target Pixel 9 Pro XL.
+- Character list, profile, chat, and settings screens navigate correctly.
+- Placeholder chat UI is clearly identified as not yet connected to inference.
 
-## 7. Acceptance checks
+### Milestone B — one local model
+- Integrate llama.cpp and load one selected GGUF model on-device.
+- Send a message and receive a generated response.
+- Verify repeated multi-turn chat, cancellation, error handling, and airplane-mode operation.
+- Measure memory use, startup time, and generation speed on the target phone.
 
-The milestone is not considered complete until:
-- The app installs and launches on the target Android phone.
-- Navigation and all primary screens work.
-- Story choices reach the expected branches and endings.
-- Story progress and favorites survive closing and reopening the app.
-- Scenario combinations change when rerolled and remain locally available.
-- Imported media can be viewed or played and remains available after restart.
-- Core features work in airplane mode.
-- No remote server is contacted for ordinary app use.
+### Milestone C — persistent character chat
+- Bundle the approved initial character profiles and portraits.
+- Character instructions are applied automatically.
+- Multiple characters maintain separate conversation histories.
+- Closing and reopening the app restores conversations correctly.
 
-## 8. Explicit exclusions from the first release
+### Milestone D — model management
+- Import a compatible GGUF from Android's document picker.
+- Validate file access and model load before marking it usable.
+- Switch between two verified compatible models.
+- Confirm character profiles and chat records remain intact.
+- Reject incompatible or failed models without damaging the active model or saved data.
 
-- No chatbot or local LLM.
-- No remote server, user account, cloud sync, or paid API.
-- No scraping or automatic downloading of adult material.
-- No bundled third-party pornographic media without clear rights and approval.
-- No claim that a static template generator is an AI.
+A milestone is complete only after its stated tests pass. A successful Gradle build alone does not prove on-device inference works.
 
-## 9. Decisions to confirm during design
+## 8. Known technical risks
 
-These are design choices, not blockers to creating the first prototype:
-- Final app color palette and visual style.
-- Whether the primary home emphasis is Stories, Scenario Studio, or My Library.
-- The initial story themes and how much authored content to include.
-- Whether PIN protection is enabled by default.
-- Supported media formats and whether export/backup is included in the first release.
+- GGUF compatibility varies; model metadata, tokenizer, chat template, and llama.cpp support must be checked.
+- An 8B quantized model may run on the target phone, but speed, memory pressure, thermal behavior, and context capacity must be measured on-device.
+- Downloading arbitrary models is not equivalent to supporting all models. The app will maintain a tested compatibility list.
+- Character consistency depends partly on the selected model. The app can preserve profile and chat data, but cannot guarantee identical output across models.
+- Model licensing and distribution terms must be checked before bundling any model.
 
-## 10. Delivery rule
+## 9. Development controls
 
-Work on the rebuild branch. Keep the original main branch untouched. Build and test each milestone before describing it as working. Do not merge to main without the user's explicit approval.
+- Work only on `rebuild/clean-nexora` for this rebuild.
+- Keep `main` untouched.
+- Do not merge or modify `main` without the user's explicit approval.
+- Do not add features outside this contract without approval.
+- Report build, automated test, and physical-device results separately.
+- Never describe a feature as working until it has been built and tested.
