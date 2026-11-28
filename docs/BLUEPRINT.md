@@ -13,7 +13,7 @@ The first release is deliberately a focused chat app, not a game platform or med
 The app has four primary areas:
 
 1. **Character list** — browse a small set of bundled fictional adult characters in a vertical list. Each row shows a portrait thumbnail, character name, and short description. Selecting a row opens that character's profile.
-2. **Character profile** — view the character description and start or resume a conversation.
+2. **Character profile** — show the selected character's large portrait, name, personality/description, and a prominent action to start a new chat or resume the existing conversation.
 3. **Chat** — send messages and receive locally generated model responses. The app automatically supplies the selected character definition and conversation context.
 4. **Settings / Model manager** — see the active model, import or download a compatible GGUF model, select an installed model, and view basic model status.
 
@@ -28,6 +28,21 @@ The v1 character-selection screen is a list, not a portrait-card grid and not a 
 - The character's display name.
 - A short description.
 - A tap action that opens the character's profile.
+
+This is a documented design decision. It is not represented as implemented until the screen exists in the app and is verified.
+
+### Character profile decision — Question 2
+
+**Approved choice: A — Full character profile.**
+
+After the user selects a character from the list, NEXORA opens a dedicated profile screen containing:
+- A large character portrait.
+- The character's display name.
+- Her personality and descriptive profile text.
+- A prominent **Start Chat** action when no conversation exists.
+- A **Resume Chat** action when a saved conversation exists.
+
+This screen provides context about the selected character before entering the conversation. The profile is a presentation of the app-owned character definition; it does not require the user to configure prompts or model settings.
 
 This is a documented design decision. It is not represented as implemented until the screen exists in the app and is verified.
 
